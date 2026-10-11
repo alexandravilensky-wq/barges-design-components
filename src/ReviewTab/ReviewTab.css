@@ -1,0 +1,35 @@
+.bdc-review-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 11px;
+  border: 0;
+  background: none;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Selected: 2px underline, padding shrinks so the tab keeps its height. */
+.bdc-review-tab--selected {
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--color-text-primary);
+}
+
+.bdc-review-tab__icon {
+  display: inline-flex;
+}
+
+.bdc-review-tab--positive .bdc-review-tab__icon {
+  color: var(--color-icon-feedback-positive);
+}
+
+.bdc-review-tab--negative .bdc-review-tab__icon {
+  color: var(--color-icon-feedback-negative);
+}
+
+.bdc-review-tab:focus-visible {
+  outline: 2px solid var(--color-branding-primary);
+  outline-offset: 2px;
+}

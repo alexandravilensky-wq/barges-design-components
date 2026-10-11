@@ -1,0 +1,34 @@
+.bdc-filter-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-4);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* No spacing tokens in barges-design-tokens yet: values match Figma spacing xs/sm/md. */
+.bdc-filter-tab--mobile {
+  gap: 4px;
+  padding: 8px;
+  background: var(--color-background-primary);
+}
+
+.bdc-filter-tab--desktop {
+  gap: 16px;
+  padding: 16px;
+  background: var(--color-background-secondary);
+}
+
+.bdc-filter-tab__icon {
+  display: inline-flex;
+  color: var(--color-icon-primary);
+}
+
+.bdc-filter-tab:focus-visible {
+  outline: 2px solid var(--color-branding-primary);
+  outline-offset: 2px;
+}

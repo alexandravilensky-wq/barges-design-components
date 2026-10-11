@@ -1,0 +1,14 @@
+.bdc-reviews-tabs {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 15px 26px 0 16px;
+  border-bottom: 0.5px solid var(--color-border-primary);
+  background: var(--color-background-primary);
+}
+
+/* "All reviews" takes the remaining width, the counts sit on the right. */
+.bdc-reviews-tabs__all {
+  flex: 1 0 0;
+  min-width: 0;
+}

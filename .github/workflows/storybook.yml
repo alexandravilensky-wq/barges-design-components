@@ -1,0 +1,58 @@
+name: Storybook
+
+# Pull requests: check tokens, types and the Storybook build.
+# main, every night and "Run workflow": also publish Storybook to GitHub Pages.
+# While the Figma library is still changing, every build uses the latest tokens from
+# barges-design-tokens main, so token changes show up without touching this repo.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 4 * * *' # every night at 04:00 UTC, after the tokens repo's icon export
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: storybook-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      # npm saves GitHub dependencies as SSH URLs; the runner has no SSH key and the tokens repo is public.
+      - run: git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+      - run: npm ci
+      - name: Use the latest tokens from barges-design-tokens main
+        run: npm install --no-save github:alexandravilensky-wq/barges-design-tokens#main
+      - name: Check components use existing tokens
+        run: npm run check:tokens
+      - name: Type check
+        run: npm run typecheck
+      - name: Build Storybook
+        run: npm run build-storybook
+      - if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
